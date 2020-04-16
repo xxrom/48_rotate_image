@@ -21,31 +21,43 @@ class Solution:
     print('sin %f' % math.sin(math.pi / 2))
 
     startPoint = [0, 0]
-    middlePoint = [middle, middle]
-    vectorSize = calcVectorSize(startPoint[0], startPoint[1], middlePoint[0],
-                                middlePoint[1])
-    print('vectSize %f' % vectorSize)
-    # TODO: turn vector TO pi/2  =) that is all
 
-    for i in range(middle + 1):
-      for j in range(middle):
-        print('%d %d (i,j)' % (i, j))
+    xC = middle
+    yC = middle
+    '''
+    1 2 3 4
+    5 6 7 8
+    9 9 9 9
+    3 3 3 3
 
-        i1 = getNextIndex(i, size - 1, size)
-        j1 = getNextIndex(j, 0)
-        print('%d %d (i1,j1)' % (i1, j1))
+    [0,1] = from center [2,2]
+    calc 'diff' and then
+    find next 4 points
+    by adding 'diff'
+    plus adding shift individually
+    by x and y lines
+    '''
 
-        i2 = getNextIndex(i1)
-        j2 = getNextIndex(j1, size - 1, size)
-        print('%d %d (i2,j2)' % (i2, j2))
+    for x in range(middle + 1):
+      for y in range(middle):
+        print('%d %d (x,y)' % (x, y))
 
-        i3 = getNextIndex(i2, -(size - 1), size)
-        j3 = getNextIndex(j2)
-        print('%d %d (i3,j3)' % (i3, j3))
+        xD = xC - x
+        yD = yC - y
+        diff = math.sqrt(xD**2 + yD**2)
+        print('diff', diff)
 
-        i4 = getNextIndex(i3)
-        j4 = getNextIndex(j3, -(size - 1), size)
-        print('%d %d (i4,j4)' % (i4, j4))
+        x1 = xC + diff - abs(y)
+        y1 = yC - diff - abs(x)
+        print('%d %d (x1,y1)' % (x1, y1))
+
+        x2 = xC + diff - abs(x)
+        y2 = yC + diff - abs(y)
+        print('%d %d (x2,y2)' % (x2, y2))
+
+        x3 = xC - diff - abs(y)
+        y3 = yC + diff - abs(x)
+        print('%d %d (x3,y3)' % (x3, y3))
 
         print('')
 
@@ -55,16 +67,41 @@ n = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 print("n before", n)
 my.rotate(n)
 print("n after", n)
-'''md
-    0 1 2
-0 | 1 2 3
-1 | 4 5 6
-2 | 7 8 9
 
-0 0 -> 2 0 -> 2 2 -> 0 2
-point -  0 0
-center - 1 1
-diff vector - ((0 - 1)^2 - (0 - 1)^2) =
+#     0 1 2
+# 0 | 1 2 3
+# 1 | 4 5 6
+# 2 | 7 8 9
 
-0 1 -> 1 0 -> 2 1 -> 1 2
-'''
+# 0 1
+# 3/2 = 1/1
+
+# First
+# 1,1 - 0,1 = 1,0
+# width = 1
+# 0,1 + 1,-1 = 1,0
+# down => left
+
+# 0,0 1,1
+# x,y xC,yC
+
+# xD,xY = xC - x, yC - y
+# 1,1
+
+# x1 = xC - xD
+# y1 = yC + yD
+
+# x2 = xC + xD
+# y2 = yC + yD
+# 2,2
+
+# x3 = xC - xD
+# y3 = yC + yD
+# 0,2
+
+# 0 0 -> 2 0 -> 2 2 -> 0 2
+# point -  0 0
+# center - 1 1
+# diff vector - ((0 - 1)^2 - (0 - 1)^2) =
+
+# 0 1 -> 1 0 -> 2 1 -> 1 2
