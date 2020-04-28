@@ -13,28 +13,37 @@ class Solution:
 
   def rotate(self, matrix: List[List[int]]) -> None:
     size = len(matrix) - 1
-    middle = (size) / 2
+    middle = int((size) / 2)
 
     shift = 1 if len(matrix) % 2 == 0 else 0
 
-    for x in range(int(middle) + shift):
-      for y in range(int(middle) + 1):
+    for x in range(middle + shift):
+      for y in range(middle + 1):
+        # direct crazy calculations =) (explanation - see full calculation =))
+        temp = matrix[x][y]
+        matrix[x][y] = matrix[size - y][x]
+        matrix[size - y][x] = matrix[size - x][size - y]
+        matrix[size - x][size - y] = matrix[y][size - x]
+        matrix[y][size - x] = temp
+
+        # VVV ! FULL calculation ! VVV
+        # Calculate from (0,0) point with (x, y) shifts
+        # and move (0,0) - shift (x, y) and move to another corner and so one
         # print('%d %d (x,y)' % (x, y))
 
-        x1 = size - y
-        y1 = x
-        # print('%d %d (x1,y1) %.04f %.04f' % (round(x1, 0), round(y1, 0), x1, y1))
+        # x1 = size - y
+        # y1 = x
+        # # print('%d %d (x1,y1) %.04f %.04f' % (round(x1, 0), round(y1, 0), x1, y1))
 
-        x2 = size - x
-        y2 = size - y
-        # print('%d %d (x2,y2) %.04f %.04f' % (round(x2, 0), round(y2, 0), x2, y2))
+        # x2 = size - x
+        # y2 = size - y
+        # # print('%d %d (x2,y2) %.04f %.04f' % (round(x2, 0), round(y2, 0), x2, y2))
 
-        x3 = y
-        y3 = size - x
+        # x3 = y
+        # y3 = size - x
         # print('%d %d (x3,y3) %.04f %.04f' % (round(x3, 0), round(y3, 0), x3, y3))
         # print('')
-
-        self.shiftAll(matrix, x, y, x1, y1, x2, y2, x3, y3)
+        # self.shiftAll(matrix, x, y, x1, y1, x2, y2, x3, y3)
 
 
 my = Solution()
@@ -44,8 +53,8 @@ print("n before", n)
 my.rotate(n)
 print("n after", n)
 
-# Runtime: 32 ms, faster than 78.58% of Python3 online submissions for Rotate Image.
-# Memory Usage: 13.9 MB, less than 6.25% of Python3 online submissions for Rotate Image.
+# Runtime: 16 ms, faster than 99.97% of Python3 online submissions for Rotate Image.
+# Memory Usage: 13.8 MB, less than 6.25% of Python3 online submissions for Rotate Image.
 
 #     0 1 2 3
 # 0 | 1 2 3 4
