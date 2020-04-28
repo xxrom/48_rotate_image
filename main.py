@@ -1,72 +1,60 @@
 from typing import List
-import math
 
 
 class Solution:
 
+  def shiftAll(self, matrix: List[List[int]], x0: int, y0: int, x1: int,
+               y1: int, x2: int, y2: int, x3: int, y3: int):
+    temp = matrix[x0][y0]
+    matrix[x0][y0] = matrix[x1][y1]
+    matrix[x1][y1] = matrix[x2][y2]
+    matrix[x2][y2] = matrix[x3][y3]
+    matrix[x3][y3] = temp
+
   def rotate(self, matrix: List[List[int]]) -> None:
-    size = len(matrix)
-    middle = int(size / 2)
-    print('middle %d' % middle)
+    size = len(matrix) - 1
+    middle = (size) / 2
 
-    def calcVectorSize(x0, y0, x1, y1):
-      return math.sqrt((x0 - x1)**2 + (y0 - y1)**2)
+    shift = 1 if len(matrix) % 2 == 0 else 0
 
-    def getNextIndex(currentIndex: int, changeValue=0, size=0):
-      if (size == 0):
-        return currentIndex
+    for x in range(int(middle) + shift):
+      for y in range(int(middle) + 1):
+        # print('%d %d (x,y)' % (x, y))
 
-      return (currentIndex + changeValue) % size
+        x1 = size - y
+        y1 = x
+        # print('%d %d (x1,y1) %.04f %.04f' % (round(x1, 0), round(y1, 0), x1, y1))
 
-    print('sin %f' % math.sin(math.pi / 2))
+        x2 = size - x
+        y2 = size - y
+        # print('%d %d (x2,y2) %.04f %.04f' % (round(x2, 0), round(y2, 0), x2, y2))
 
-    startPoint = [0, 0]
+        x3 = y
+        y3 = size - x
+        # print('%d %d (x3,y3) %.04f %.04f' % (round(x3, 0), round(y3, 0), x3, y3))
+        # print('')
 
-    xC = middle
-    yC = middle
-    '''
-    1 2 3 4
-    5 6 7 8
-    9 9 9 9
-    3 3 3 3
-
-    [0,1] = from center [2,2]
-    calc 'diff' and then
-    find next 4 points
-    by adding 'diff'
-    plus adding shift individually
-    by x and y lines
-    '''
-
-    for x in range(middle + 1):
-      for y in range(middle):
-        print('%d %d (x,y)' % (x, y))
-
-        xD = xC - x
-        yD = yC - y
-        diff = math.sqrt(xD**2 + yD**2)
-        print('diff', diff)
-
-        x1 = xC + diff - abs(y)
-        y1 = yC - diff - abs(x)
-        print('%d %d (x1,y1)' % (x1, y1))
-
-        x2 = xC + diff - abs(x)
-        y2 = yC + diff - abs(y)
-        print('%d %d (x2,y2)' % (x2, y2))
-
-        x3 = xC - diff - abs(y)
-        y3 = yC + diff - abs(x)
-        print('%d %d (x3,y3)' % (x3, y3))
-
-        print('')
+        self.shiftAll(matrix, x, y, x1, y1, x2, y2, x3, y3)
 
 
 my = Solution()
-n = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+# n = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+n = [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]
 print("n before", n)
 my.rotate(n)
 print("n after", n)
+
+# Runtime: 32 ms, faster than 78.58% of Python3 online submissions for Rotate Image.
+# Memory Usage: 13.9 MB, less than 6.25% of Python3 online submissions for Rotate Image.
+
+#     0 1 2 3
+# 0 | 1 2 3 4
+# 1 | 4 5 6 7
+# 2 | 7 8 9 9
+# 3 | 9 9 8 2
+
+# 0 1 => 2 0 => 3 2 => 1 3
+# 1 0 => 3 1 => 2 3 => 0 2
 
 #     0 1 2
 # 0 | 1 2 3
